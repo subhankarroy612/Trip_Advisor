@@ -1,0 +1,38 @@
+#navbar {
+    width: 1170px;
+    margin: auto;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#navItems_container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+
+.navItems_child {
+    padding: 9px;
+    border-radius: 50px;
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.navItems_child:hover {
+    background-color: rgba(128, 128, 128, 0.374);
+}
+
+@media screen and (max-width: 1023px) {
+    .navText {
+        display: none;
+    }
+
+    #navbar {
+        width: 90%;
+    }
+}
