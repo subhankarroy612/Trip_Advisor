@@ -1,9 +1,14 @@
 #navbar {
     width: 1170px;
-    margin: auto;
     padding: 10px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+    margin: auto;
 }
 
 #navItems_container {
@@ -27,6 +32,24 @@
     background-color: rgba(128, 128, 128, 0.374);
 }
 
+.search_btn{
+    display: none;
+}
+
+.hamburger{
+    display: none;
+    cursor: pointer;
+}
+
+#logo{
+    width: 190px;
+}
+
+
+#cross{
+    cursor: pointer;
+}
+
 @media screen and (max-width: 1023px) {
     .navText {
         display: none;
@@ -34,5 +57,25 @@
 
     #navbar {
         width: 90%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .hideBtn{
+        display: none;
+    }
+    .search_btn{
+        display: block;
+    }
+    .hamburger{
+        display: block;
+    }
+
+    #navbar{
+        width: 100%;
+    }
+
+    #logo{
+        width: 140px;
     }
 }
