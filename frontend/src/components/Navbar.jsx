@@ -1,11 +1,24 @@
 import React, { useState } from 'react'
 import styles from '../styles/navbar.module.css'
-import { Box, Button, Divider, Flex, Image, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Image,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  Text, useDisclosure
+} from '@chakra-ui/react'
 import { VscEdit } from 'react-icons/vsc'
 import { AiOutlineHeart, AiOutlineBell } from 'react-icons/ai'
 import { BsCart3 } from 'react-icons/bs'
 import { HiOutlineSearch } from 'react-icons/hi'
 import { RxHamburgerMenu, RxCross2 } from 'react-icons/rx'
+import SigninModal from './SigninModal'
 
 const navItems = [
   { label: 'Review' },
@@ -37,80 +50,98 @@ const hamItems2 = [
 export default function Navbar() {
 
   const [ham, setHam] = useState(false);
-
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handleHam = () => {
     setHam(!ham)
   }
 
+  const handleClick = () => {
+    onOpen()
+  }
+
   return (
     <div id={styles.navbar}>
 
-        <RxHamburgerMenu onClick={handleHam} className={styles.hamburger} size={'20px'} />
-        <Box
-          position={'absolute'}
-          top={'0'}
-          left={ham ? '0' : '-100vw'}
-          h={'100vh'}
-          minW={'340px'}
-          transition={'0.5s'}
-          bg={'white'}
-          boxShadow={'rgba(0, 0, 0, 0.35) 0px 5px 15px'}
-          padding={'20px'}
-        >
-          <Flex justifyContent={'flex-end'}>
-            <RxCross2 onClick={() => setHam(!ham)} size={'25px'} id={styles.cross} />
-          </Flex>
+      <Modal onClose={onClose} isOpen={isOpen} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody >
+            <SigninModal />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
 
-          <Button mt={'2vh'} pl={'100px'} pr={'100px'} bg={'black'} color={'white'} borderRadius='50px'>Sign in</Button>
+      <RxHamburgerMenu onClick={handleHam} className={styles.hamburger} size={'20px'} />
+      <Box
+        position={'absolute'}
+        top={'0'}
+        left={ham ? '0' : '-100vw'}
+        h={'100vh'}
+        minW={'340px'}
+        transition={'0.5s'}
+        bg={'white'}
+        boxShadow={'rgba(0, 0, 0, 0.35) 0px 5px 15px'}
+        padding={'20px'}
+      >
+        <Flex justifyContent={'flex-end'}>
+          <RxCross2 onClick={() => setHam(!ham)} size={'25px'} id={styles.cross} />
+        </Flex>
 
-          <Flex mt={'2vh'} lineHeight={'40px'} justifyContent={'flex-start'} flexDir={'column'} alignItems={'flex-start'}>
+        <Button mt={'2vh'} pl={'100px'} pr={'100px'} bg={'black'} color={'white'} borderRadius='50px'>Sign in</Button>
 
-            {
-              hamItems.map((ele, i) => {
-                return <Text cursor={'pointer'} key={i} as={'b'} fontSize={'lg'}>{ele.label}</Text>
-              })
-            }
-
-            <Divider mt={'2vh'} mb={'2vh'} />
-
-            {
-              hamItems2.map((ele, i) => {
-                return <Text key={i} cursor={'pointer'} as={'b'} color={'gray'} fontSize={'sm'}>{ele.label}</Text>
-              })
-            }
-
-          </Flex>
-
-        </Box>
-
-        <Image id={styles.logo} src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/TripAdvisor_Logo.svg/1024px-TripAdvisor_Logo.svg.png' />
-
-
-        <div id={styles.navItems_container}>
-
-          <HiOutlineSearch className={styles.search_btn} size={'25px'} />
+        <Flex mt={'2vh'} lineHeight={'40px'} justifyContent={'flex-start'} flexDir={'column'} alignItems={'flex-start'}>
 
           {
-            navItems.map((ele, i) => {
-              return <Box className={`${ele.label !== 'Basket' && styles.hideBtn} ${styles.navItems_child}`} color={ele.label === 'Sign in' && 'white'} bgColor={ele.label === 'Sign in' && 'black'} key={i}>
-                {i === 0 && <VscEdit size={'25px'} />}
-                {i === 1 && <AiOutlineHeart size={'25px'} />}
-                {i === 2 && <AiOutlineBell size={'25px'} />}
-                {i === 4 && <BsCart3 size={'25px'} />}
-                <Text
-                  className={ele.label !== 'Sign in' && styles.navText}
-                  as={'b'}
-                  fontSize={'sm'}
-                >
-                  {ele.label}
-                </Text>
-              </Box>
+            hamItems.map((ele, i) => {
+              return <Text cursor={'pointer'} key={i} as={'b'} fontSize={'lg'}>{ele.label}</Text>
             })
           }
 
-        </div>
+          <Divider mt={'2vh'} mb={'2vh'} />
 
-    </div>
+          {
+            hamItems2.map((ele, i) => {
+              return <Text key={i} cursor={'pointer'} as={'b'} color={'gray'} fontSize={'sm'}>{ele.label}</Text>
+            })
+          }
+
+        </Flex>
+
+      </Box>
+
+      <Image id={styles.logo} src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/TripAdvisor_Logo.svg/1024px-TripAdvisor_Logo.svg.png' />
+
+
+      <div id={styles.navItems_container}>
+
+        <HiOutlineSearch className={styles.search_btn} size={'25px'} />
+
+        {
+          navItems.map((ele, i) => {
+            return <Box
+              onClick={ele.label === 'Sign in' ? handleClick : undefined}
+              className={`${ele.label !== 'Basket' && styles.hideBtn} ${styles.navItems_child}`} color={ele.label === 'Sign in' && 'white'}
+              bgColor={ele.label === 'Sign in' && 'black'}
+              key={i}>
+              {i === 0 && <VscEdit size={'25px'} />}
+              {i === 1 && <AiOutlineHeart size={'25px'} />}
+              {i === 2 && <AiOutlineBell size={'25px'} />}
+              {i === 4 && <BsCart3 size={'25px'} />}
+              <Text
+                className={ele.label !== 'Sign in' && styles.navText}
+                as={'b'}
+                fontSize={'sm'}
+              >
+                {ele.label}
+              </Text>
+            </Box>
+          })
+        }
+
+      </div>
+
+    </div >
   )
 }
