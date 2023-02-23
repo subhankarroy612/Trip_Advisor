@@ -89,7 +89,7 @@ export default function Navbar() {
           <RxCross2 onClick={() => setHam(!ham)} size={'25px'} id={styles.cross} />
         </Flex>
 
-        <Button mt={'2vh'} pl={'100px'} pr={'100px'} bg={'black'} color={'white'} borderRadius='50px'>Sign in</Button>
+        <Button onClick={onOpen} mt={'2vh'} pl={'100px'} pr={'100px'} bg={'black'} color={'white'} borderRadius='50px'>Sign in</Button>
 
         <Flex mt={'2vh'} lineHeight={'40px'} justifyContent={'flex-start'} flexDir={'column'} alignItems={'flex-start'}>
 
