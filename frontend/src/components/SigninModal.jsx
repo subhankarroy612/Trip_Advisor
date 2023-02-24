@@ -12,7 +12,7 @@ import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 
 
-export default function SigninModal() {
+export default function SigninModal({onClose}) {
 
   const [page, setPage] = useState('home');
 
@@ -21,7 +21,7 @@ export default function SigninModal() {
   }
 
   if (page === 'register') return <RegisterModal handleClick={handleClick} />
-  if (page === 'login') return <LoginModal handleClick={handleClick} />
+  if (page === 'login') return <LoginModal onClose={onClose} handleClick={handleClick} />
   if (page === 'home')
     return (
       <Box mt={'6vh'} p={'20px'}>

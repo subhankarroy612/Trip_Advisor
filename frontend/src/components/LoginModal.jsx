@@ -1,12 +1,54 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AiOutlineEye, AiFillEye } from 'react-icons/ai'
 import { BsChevronLeft } from 'react-icons/bs'
-import { Box, Button, Link, Divider, Flex, Img, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react'
+import { Box, Button, Link, Divider, Flex, Img, Input, InputGroup, InputRightElement, Text, useToast } from '@chakra-ui/react'
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/authReducer/auth.actions';
 
+export default function LoginModal({ handleClick, onClose }) {
 
-export default function LoginModal({ handleClick }) {
-
+    const toast = useToast()
+    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
     const [show, setShow] = React.useState(false)
+    const [data, setData] = useState({
+        email: '',
+        password: ''
+    })
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setData({ ...data, [name]: value })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true)
+
+        if (!data.email || !data.password) {
+            setLoading(false)
+            return toast({
+                title: 'Please fill all the details!',
+                status: 'error',
+                duration: 5000,
+                position: 'top',
+                isClosable: true,
+            })
+        }
+
+        dispatch(login(data)).then((r) => {
+            onClose()
+            return toast({
+                title: r ? 'Login successful!' : 'Invalid credentials!',
+                status: r ? 'success' : 'error',
+                duration: 5000,
+                position: 'top',
+                isClosable: true,
+            })
+        }).finally(() => {
+            setLoading(false)
+        })
+    }
 
     return (
         <Box p={'20px'}>
@@ -26,16 +68,20 @@ export default function LoginModal({ handleClick }) {
             </Box>
 
 
-            <form style={{
-                lineHeight: '40px',
-                marginTop: '3vh'
-            }} >
+            <form
+                onSubmit={handleSubmit}
+                style={{
+                    lineHeight: '40px',
+                    marginTop: '3vh'
+                }} >
 
                 <Text as={'b'} fontSize={'xs'} >Email address</Text>
-                <Input placeholder='Email' type={'email'} />
+                <Input onClick={handleChange} name={'email'} placeholder='Email' type={'email'} />
                 <Text as={'b'} fontSize={'xs'}>Password</Text>
                 <InputGroup size='md'>
                     <Input
+                        onClick={handleChange}
+                        name={'password'}
                         pr='4.5rem'
                         type={show ? 'text' : 'password'}
                         placeholder='Enter password'
@@ -50,7 +96,15 @@ export default function LoginModal({ handleClick }) {
                 <Text as={'u'} background={'1px solid black'} >Forgot password?</Text>
 
                 <Flex m={'auto'} mt={'2vh'} w={'80%'} flexDirection='column' gap={'25px'} >
-                    <Button borderRadius={'50px'} h='50px' bg={'black'} color='white'>Sign in</Button>
+                    <Button
+                        isLoading={loading}
+                        loadingText={'Submitting'}
+                        type='submit'
+                        borderRadius={'50px'}
+                        h='50px'
+                        bg={'black'}
+                        color='white'
+                    >Sign in</Button>
 
                     <Box position={'relative'} p={'5px'}>
                         <Text
