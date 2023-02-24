@@ -37,7 +37,8 @@ export default function LoginModal({ handleClick, onClose }) {
         }
 
         dispatch(login(data)).then((r) => {
-            onClose()
+            if (r)
+                onClose()
             return toast({
                 title: r ? 'Login successful!' : 'Invalid credentials!',
                 status: r ? 'success' : 'error',
