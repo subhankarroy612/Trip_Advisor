@@ -3,11 +3,13 @@ const cors = require('cors');
 const connectDB = require('./config/connectDb')
 require('dotenv').config();
 const placesRouter = require('./routes/places.routes')
+const authRouter = require('./routes/auth.routes')
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 app.use('/getData', placesRouter)
+app.use('/auth', authRouter)
 
 app.get('/', (req, res) => res.send('API Works!'))
 

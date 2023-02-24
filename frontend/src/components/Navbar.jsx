@@ -68,7 +68,7 @@ export default function Navbar() {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody >
-            <SigninModal />
+            <SigninModal onClose={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -1,15 +1,58 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AiOutlineEye, AiFillEye } from 'react-icons/ai'
 import { BsChevronLeft } from 'react-icons/bs'
-import { Box, Button, Link, Divider, Flex, Img, Input, InputGroup, InputRightElement, Text, Checkbox } from '@chakra-ui/react'
-
+import { Box, Button, Link, Divider, Flex, Img, Input, InputGroup, InputRightElement, Text, Checkbox, useToast } from '@chakra-ui/react'
+import { useDispatch } from 'react-redux'
+import { register } from '../redux/authReducer/auth.actions'
 
 export default function RegisterModal({ handleClick }) {
 
-  const [show, setShow] = React.useState(false)
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false)
+  const toast = useToast()
+  const [show, setShow] = React.useState(false);
+  const [data, setData] = useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: ''
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({ ...data, [name]: value })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true)
+    if (!data.firstname || !data.lastname || !data.email || !data.password) {
+      setLoading(false)
+      return toast({
+        title: 'Please enter all the details!',
+        status: 'error',
+        duration: 5000,
+        position: 'top',
+        isClosable: true,
+      })
+    }
+
+    dispatch(register(data)).then((r) => {
+      handleClick('login')
+      return toast({
+        title: r ? 'Sign in successful!' : 'User already exists!',
+        status: r ? 'success' : 'error',
+        duration: 5000,
+        position: 'top',
+        isClosable: true,
+      })
+    }).finally(() => {
+      setLoading(false)
+    })
+  }
 
   return (
-    <Box  p={'20px'}>
+    <Box p={'20px'}>
 
       <Button
         onClick={() => handleClick('home')}
@@ -26,7 +69,7 @@ export default function RegisterModal({ handleClick }) {
       </Box>
 
 
-      <form style={{
+      <form onSubmit={handleSubmit} style={{
         lineHeight: '40px',
         marginTop: '3vh'
       }} >
@@ -34,19 +77,20 @@ export default function RegisterModal({ handleClick }) {
         <Flex gap={5}>
           <Box>
             <Text as={'b'} fontSize={'xs'} >First Name</Text>
-            <Input placeholder='First Name' type={'text'} />
+            <Input onChange={handleChange} name='firstname' placeholder='First Name' type={'text'} />
           </Box>
           <Box>
             <Text as={'b'} fontSize={'xs'} >Last Name</Text>
-            <Input placeholder='Last Name' type={'text'} />
+            <Input onChange={handleChange} name='lastname' placeholder='Last Name' type={'text'} />
           </Box>
         </Flex>
 
         <Text as={'b'} fontSize={'xs'} >Email address</Text>
-        <Input placeholder='Email' type={'email'} />
+        <Input onChange={handleChange} name='email' placeholder='Email' type={'email'} />
         <Text as={'b'} fontSize={'xs'}>Password</Text>
         <InputGroup size='md'>
           <Input
+            onChange={handleChange} name='password'
             pr='4.5rem'
             type={show ? 'text' : 'password'}
             placeholder='Enter password'
@@ -65,7 +109,16 @@ export default function RegisterModal({ handleClick }) {
         </Flex>
 
         <Flex m={'auto'} mt={'2vh'} w={'80%'} flexDirection='column' gap={'25px'} >
-          <Button borderRadius={'50px'} h='50px' bg={'black'} color='white'>Join</Button>
+          <Button
+            isLoading={loading}
+            loadingText={'Submitting'}
+            type='submit'
+            borderRadius={'50px'}
+            h='50px' bg={'black'}
+            color='white'
+          >
+            Join
+          </Button>
 
           <Box position={'relative'} p={'5px'}>
             <Text
