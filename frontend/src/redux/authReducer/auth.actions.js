@@ -13,6 +13,7 @@ export const register = (data) => async (dispatch) => {
 }
 
 export const login = (data) => async (dispatch) => {
+    console.log(data);
     try {
         const res = await axios.post(Url + '/auth/login', data);
 

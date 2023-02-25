@@ -77,11 +77,11 @@ export default function LoginModal({ handleClick, onClose }) {
                 }} >
 
                 <Text as={'b'} fontSize={'xs'} >Email address</Text>
-                <Input onClick={handleChange} name={'email'} placeholder='Email' type={'email'} />
+                <Input onChange={handleChange} name={'email'} placeholder='Email' type={'email'} />
                 <Text as={'b'} fontSize={'xs'}>Password</Text>
                 <InputGroup size='md'>
                     <Input
-                        onClick={handleChange}
+                        onChange={handleChange}
                         name={'password'}
                         pr='4.5rem'
                         type={show ? 'text' : 'password'}
