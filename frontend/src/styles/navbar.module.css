@@ -16,6 +16,7 @@
     justify-content: space-between;
     gap: 10px;
     align-items: center;
+    position: relative;
 }
 
 .navItems_child {
@@ -32,22 +33,49 @@
     background-color: rgba(128, 128, 128, 0.374);
 }
 
-.search_btn{
+.search_btn {
     display: none;
 }
 
-.hamburger{
+.hamburger {
     display: none;
     cursor: pointer;
 }
 
-#logo{
+#logo {
     width: 190px;
 }
 
 
-#cross{
+#cross {
     cursor: pointer;
+}
+
+#profileItems {
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding: 10px;
+    background: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    position: absolute;
+    bottom: -195px;
+    color: black;
+    right: 0;
+}
+
+.profileText {
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+.profileText:hover {
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.229);
 }
 
 @media screen and (max-width: 1023px) {
@@ -61,21 +89,23 @@
 }
 
 @media screen and (max-width: 768px) {
-    .hideBtn{
+    .hideBtn {
         display: none;
     }
-    .search_btn{
-        display: block;
-    }
-    .hamburger{
+
+    .search_btn {
         display: block;
     }
 
-    #navbar{
+    .hamburger {
+        display: block;
+    }
+
+    #navbar {
         width: 100%;
     }
 
-    #logo{
+    #logo {
         width: 140px;
     }
 }

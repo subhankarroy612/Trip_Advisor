@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Url } from '../../components/Url'
-import { LOGIN } from './auth.actionTypes'
+import { LOGIN, LOGOUT } from './auth.actionTypes'
 
 export const register = (data) => async (dispatch) => {
     try {
@@ -13,14 +13,18 @@ export const register = (data) => async (dispatch) => {
 }
 
 export const login = (data) => async (dispatch) => {
-    console.log(data);
     try {
         const res = await axios.post(Url + '/auth/login', data);
-
         dispatch({ type: LOGIN, payload: res.data.token })
         return true
     } catch (e) {
         console.log(e.message);
         return false
+    }
+}
+
+export const logout = () => {
+    return {
+        type: LOGOUT
     }
 }

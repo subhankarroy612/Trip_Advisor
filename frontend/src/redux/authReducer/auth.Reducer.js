@@ -1,7 +1,7 @@
-import { LOGIN } from "./auth.actionTypes"
+import { LOGIN, LOGOUT } from "./auth.actionTypes"
 
 const initState = {
-    isAuth: false,
+    isAuth: !!localStorage.getItem('tripAdvisor'),
     token: localStorage.getItem('tripAdvisor') || ''
 }
 
@@ -14,6 +14,13 @@ export const authReducer = (state = initState, action) => {
                 ...state,
                 isAuth: true,
                 token: action.payload
+            }
+        case LOGOUT:
+            localStorage.removeItem('tripAdvisor')
+            return {
+                ...state,
+                isAuth: false,
+                token: ''
             }
         default:
             return state

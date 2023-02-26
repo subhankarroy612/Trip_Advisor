@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import styles from '../styles/navbar.module.css'
+import React, { useEffect, useState } from 'react';
+import styles from '../styles/navbar.module.css';
 import {
   Box,
   Button,
@@ -11,14 +11,17 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-  Text, useDisclosure
-} from '@chakra-ui/react'
-import { VscEdit } from 'react-icons/vsc'
-import { AiOutlineHeart, AiOutlineBell } from 'react-icons/ai'
-import { BsCart3 } from 'react-icons/bs'
-import { HiOutlineSearch } from 'react-icons/hi'
-import { RxHamburgerMenu, RxCross2 } from 'react-icons/rx'
-import SigninModal from './SigninModal'
+  Text, useDisclosure, useToast
+} from '@chakra-ui/react';
+import { VscEdit } from 'react-icons/vsc';
+import { AiOutlineHeart, AiOutlineBell } from 'react-icons/ai';
+import { BsCart3 } from 'react-icons/bs';
+import { HiOutlineSearch } from 'react-icons/hi';
+import { RxHamburgerMenu, RxCross2 } from 'react-icons/rx';
+import SigninModal from './SigninModal';
+import { useDispatch, useSelector } from 'react-redux';
+import jwt_decode from 'jwt-decode'
+import { logout } from '../redux/authReducer/auth.actions';
 
 const navItems = [
   { label: 'Review' },
@@ -47,17 +50,48 @@ const hamItems2 = [
   { label: 'Car Hire' },
 ]
 
+const profileItems = [
+  { label: 'View profile' },
+  { label: 'Bookings' },
+  { label: 'Account info' },
+  { label: 'Sign out' },
+]
+
 export default function Navbar() {
 
   const [ham, setHam] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const dispatch = useDispatch()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isAuth, token } = useSelector(s => s.auth);
+  const [profile, setProfile] = useState(false)
+  const [userDetails, setUserDetails] = useState({});
+  const toast = useToast()
+
+  useEffect(() => {
+    if (token.length)
+      setUserDetails(jwt_decode(token))
+  }, [isAuth, token, userDetails.firstname]);
 
   const handleHam = () => {
     setHam(!ham)
   }
 
   const handleClick = () => {
-    onOpen()
+    if (isAuth)
+      setProfile(!profile)
+    if (!isAuth)
+      onOpen()
+  }
+
+  const handleLogout = () => {
+    dispatch(logout())
+    return toast({
+      title: 'Sign out successful!',
+      status: 'success',
+      position: 'top',
+      duration: 5000,
+      isClosable: true,
+    })
   }
 
   return (
@@ -89,7 +123,7 @@ export default function Navbar() {
           <RxCross2 onClick={() => setHam(!ham)} size={'25px'} id={styles.cross} />
         </Flex>
 
-        <Button onClick={onOpen} mt={'2vh'} pl={'100px'} pr={'100px'} bg={'black'} color={'white'} borderRadius='50px'>Sign in</Button>
+        <Button onClick={!isAuth ? onOpen : undefined} mt={'2vh'} pl={'100px'} pr={'100px'} bg={'black'} color={'white'} borderRadius='50px'>{isAuth ? userDetails.firstname : 'Sign in'}</Button>
 
         <Flex mt={'2vh'} lineHeight={'40px'} justifyContent={'flex-start'} flexDir={'column'} alignItems={'flex-start'}>
 
@@ -106,6 +140,11 @@ export default function Navbar() {
               return <Text key={i} cursor={'pointer'} as={'b'} color={'gray'} fontSize={'sm'}>{ele.label}</Text>
             })
           }
+          {
+            isAuth &&
+            <Text onClick={handleLogout} cursor={'pointer'} as={'b'} color={'gray'} fontSize={'sm'}>Sign out</Text>
+          }
+
 
         </Flex>
 
@@ -121,6 +160,7 @@ export default function Navbar() {
         {
           navItems.map((ele, i) => {
             return <Box
+              position={'relative'}
               onClick={ele.label === 'Sign in' ? handleClick : undefined}
               className={`${ele.label !== 'Basket' && styles.hideBtn} ${styles.navItems_child}`} color={ele.label === 'Sign in' && 'white'}
               bgColor={ele.label === 'Sign in' && 'black'}
@@ -134,11 +174,31 @@ export default function Navbar() {
                 as={'b'}
                 fontSize={'sm'}
               >
-                {ele.label}
+                {ele.label === 'Sign in' && isAuth ? userDetails.firstname : ele.label}
               </Text>
+
+              {ele.label === 'Sign in' && profile && <Box id={styles.profileItems}>
+                {
+                  profileItems.map((ele, i) => {
+                    return <Box
+                      key={i}
+                      onClick={ele.label === 'Sign out' ? handleLogout : undefined}
+                      className={styles.profileText}
+                      h={'40px'}
+                      w='full'>
+                      <Text as={'b'}>
+                        {ele.label}
+                      </Text>
+                    </Box>
+                  })
+                }
+              </Box>}
+
+
             </Box>
           })
         }
+
 
       </div>
 
