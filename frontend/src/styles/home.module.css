@@ -1,0 +1,17 @@
+#home {
+    width: 1170px;
+    margin: auto;
+    padding: 10px;
+}
+
+#topbtns {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(6, 1fr);
+    width: 100%;
+}
+
+#topbtns>button:hover {
+    background-color: black;
+    color: white;
+}
