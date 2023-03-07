@@ -11,7 +11,7 @@ export default function Home() {
 
   const [p1, setP1] = useState([])
   const dispatch = useDispatch()
-
+ 
   useEffect(() => {
     dispatch(getP1()).then((r) => {
       setP1(r)
