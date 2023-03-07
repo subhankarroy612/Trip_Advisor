@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import '../styles/places.css'
+import { useNavigate } from "react-router-dom";
 
 function SampleNextArrow(props) {
     const { onClick } = props;
@@ -79,6 +80,11 @@ export default function Places({ data }) {
             }
         ]
     };
+    const router = useNavigate()
+
+    const handleClick = (ele) => {
+        router('/singlePlace/' + ele._id)
+    }
     return (
         <Box
             position={'relative'}
@@ -87,6 +93,7 @@ export default function Places({ data }) {
                 {
                     data.map((ele, i) => {
                         return <div
+                            onClick={() => handleClick(ele)}
                             key={i}>
                             <Image
                                 src={ele.thumbnail} />
