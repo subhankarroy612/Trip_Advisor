@@ -22,6 +22,7 @@ import SigninModal from './SigninModal';
 import { useDispatch, useSelector } from 'react-redux';
 import jwt_decode from 'jwt-decode'
 import { logout } from '../redux/authReducer/auth.actions';
+import { useNavigate } from 'react-router-dom';
 
 const navItems = [
   { label: 'Review' },
@@ -66,6 +67,7 @@ export default function Navbar() {
   const [profile, setProfile] = useState(false)
   const [userDetails, setUserDetails] = useState({});
   const toast = useToast()
+  const router = useNavigate()
 
   useEffect(() => {
     if (token.length)
@@ -150,7 +152,7 @@ export default function Navbar() {
 
       </Box>
 
-      <Image id={styles.logo} src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/TripAdvisor_Logo.svg/1024px-TripAdvisor_Logo.svg.png' />
+      <Image cursor={'pointer'} onClick={() => router('/')} id={styles.logo} src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/TripAdvisor_Logo.svg/1024px-TripAdvisor_Logo.svg.png' />
 
 
       <div id={styles.navItems_container}>

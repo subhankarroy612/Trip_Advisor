@@ -1,0 +1,29 @@
+#singlePlace {
+    position: relative;
+    width: 1170px;
+    margin: auto;
+    padding: 10px;
+}
+
+
+@media screen and (max-width: 1023px) {
+    #singlePlace {
+        width: 90%;
+    }
+    #imageLeftSec{
+        width: 100%;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    #singlePlace {
+        width: 100%;
+    }
+
+    #imageRightSec {
+        display: none;
+    }
+
+
+}

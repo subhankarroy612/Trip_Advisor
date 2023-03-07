@@ -6,10 +6,8 @@ const app = express.Router();
 
 app.get('/places', async (req, res) => {
     try {
-
         let data = await placesModel.find()
-        return res.send(data)
-
+        return res.status(200).send(data)
     } catch (e) {
         return res.status(501).send(e.message)
     }
@@ -17,9 +15,19 @@ app.get('/places', async (req, res) => {
 
 app.get('/tour', async (req, res) => {
     try {
-        let data =  await toursModel.find()
-        res.send(data)
+        let data = await toursModel.find()
+        return res.status(200).send(data)
 
+    } catch (e) {
+        return res.status(501).send(e.message)
+    }
+})
+
+app.get('/singlePlace/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const place = await placesModel.findById(id)
+        return res.status(200).send(place)
     } catch (e) {
         return res.status(501).send(e.message)
     }

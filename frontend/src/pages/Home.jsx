@@ -1,77 +1,28 @@
-import { Box, Button, Flex, Image, Input, Text } from '@chakra-ui/react'
+import { Box, Image, Input, Text } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/home.module.css'
-import { MdBed } from 'react-icons/md';
-import { TbRoad } from 'react-icons/tb';
-import { AiOutlineHome } from 'react-icons/ai';
-import { MdRestaurantMenu } from 'react-icons/md';
-import { CiGlobe } from 'react-icons/ci';
-import { SlPlane } from 'react-icons/sl';
 import Places from '../components/Places';
-import axios from 'axios'
-import { Url } from '../components/Url';
-
-let fullScreenBtns = [
-  { label: 'Hotels' },
-  { label: 'Things to Do' },
-  { label: 'Holiday Homes' },
-  { label: 'Restaurants' },
-  { label: 'Travel Stories' },
-  { label: 'Flights' },
-]
-
+import { useDispatch } from 'react-redux';
+import { getP1 } from '../redux/homeReducer/home.actions';
+import TopButtons from '../components/TopButtons';
 
 
 export default function Home() {
 
   const [p1, setP1] = useState([])
+  const dispatch = useDispatch()
 
   useEffect(() => {
-      getP1()
-  }, []);
-
-  const getP1 = async () => {
-    let res = await axios(Url + '/getData/places')
-    setP1(res.data)
-  }
+    dispatch(getP1()).then((r) => {
+      setP1(r)
+    })
+  }, [dispatch]);
 
 
   return (
     <Box id={styles.home}>
 
-      <Box
-        mt={'18px'}
-        id={styles.topbtns}
-      >
-        {
-          fullScreenBtns.map((ele, i) => {
-            return <Button
-              h={'50px'}
-              borderRadius={'10px'}
-              colorScheme='black'
-              variant={'outline'}
-              bg={'white'}
-              color={'black'}
-              key={i}>
-
-              <Flex
-                w={'full'}
-                alignItems='center'
-                justifyContent={'space-between'}
-              >
-                <Text fontSize={'sm'}>{ele.label}</Text>
-                {i === 0 && <MdBed size={'25px'} />}
-                {i === 1 && <TbRoad size={'25px'} />}
-                {i === 2 && <AiOutlineHome size={'25px'} />}
-                {i === 3 && <MdRestaurantMenu size={'25px'} />}
-                {i === 4 && <CiGlobe size={'25px'} />}
-                {i === 5 && <SlPlane size={'25px'} />}
-              </Flex>
-            </Button>
-
-          })
-        }
-      </Box>
+      <TopButtons/>
 
       <Box
         position={'relative'}
@@ -99,7 +50,7 @@ export default function Home() {
         <Text fontSize={'2xl'} as='b' >Where to go, right now</Text>
         <Text color={'gray'} textAlign={'start'}>Spots at the top of travellers’ must-go lists</Text>
 
-        { p1 && <Places data={p1} />}
+        {p1 && <Places data={p1} />}
       </Box>
 
     </Box >
