@@ -1,0 +1,45 @@
+#trips {
+    position: relative;
+    width: 1170px;
+    margin: auto;
+    padding: 10px;
+}
+
+#emptyContainer {
+    width: 50%;
+}
+
+#allTrips {
+    display: grid;
+    gap: 25px;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+@media screen and (max-width: 1023px) {
+    #trips {
+        width: 90%;
+    }
+
+    #emptyContainer {
+        width: 70%;
+    }
+
+    #allTrips {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    #trips {
+        width: 100%;
+    }
+
+    #emptyContainer {
+        width: 100%;
+    }
+
+    #allTrips {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

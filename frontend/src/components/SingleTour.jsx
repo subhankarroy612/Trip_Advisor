@@ -1,8 +1,8 @@
-import { Box, Button, Divider, Flex, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Divider, Flex, Text, useToast, VStack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { getSingleTour } from '../redux/homeReducer/home.actions'
+import { addToTrips, getSingleTour } from '../redux/homeReducer/home.actions'
 import styles from '../styles/singleTour.module.css'
 import ToursCarousel from './ToursCarousel';
 import { AiOutlineHeart, AiOutlineMobile } from 'react-icons/ai';
@@ -16,7 +16,8 @@ export default function SingleTour() {
     const dispatch = useDispatch()
     const { id } = useParams();
     const [tour, setTour] = useState({})
-    const { isAuth, open } = useSelector(s => s.auth)
+    const { isAuth, open, token } = useSelector(s => s.auth)
+    const toast = useToast()
 
     useEffect(() => {
         dispatch(getSingleTour(id)).then((r) => {
@@ -26,6 +27,18 @@ export default function SingleTour() {
     const handleTrips = () => {
         if (!isAuth)
             return open()
+
+        dispatch(addToTrips(id, token)).then((r) => {
+
+            toast({
+                title: r ? 'Trip added successfully!' : 'Trip has already been added!',
+                position: 'top',
+                status: r ? 'success' : 'error',
+                duration: 5000,
+                isClosable: true,
+            })
+
+        })
 
         //to be added to wishlist    
     }
