@@ -72,7 +72,9 @@ export default function Navbar() {
   useEffect(() => {
     if (token.length)
       setUserDetails(jwt_decode(token))
-  }, [isAuth, token, userDetails.firstname]);
+
+    dispatch({ type: 'storeModal', payload: onOpen })
+  }, [isAuth, token, userDetails.firstname, dispatch, onOpen]);
 
   const handleHam = () => {
     setHam(!ham)

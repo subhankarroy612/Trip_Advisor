@@ -33,7 +33,15 @@ app.get('/singlePlace/:id', async (req, res) => {
     }
 })
 
-
+app.get('/singleTour/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const tour = await toursModel.findById(id)
+        return res.status(200).send(tour)
+    } catch (e) {
+        return res.status(501).send(e.message)
+    }
+})
 
 
 module.exports = app;

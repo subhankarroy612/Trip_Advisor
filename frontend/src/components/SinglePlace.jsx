@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { getSinglePlace } from '../redux/homeReducer/home.actions'
-import { Box, Flex, Image, Text, VStack } from '@chakra-ui/react'
+import { Box, Flex, Image, Text } from '@chakra-ui/react'
 import styles from '../styles/singlePlace.module.css'
 import TopButtons from './TopButtons'
 
@@ -16,7 +16,7 @@ export default function SinglePlace() {
     dispatch(getSinglePlace(id)).then((r) => {
       setPlace(r);
     })
-  }, [])
+  }, [dispatch, id])
 
   return (
     <Box id={styles.singlePlace}>
