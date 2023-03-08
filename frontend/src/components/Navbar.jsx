@@ -80,11 +80,19 @@ export default function Navbar() {
     setHam(!ham)
   }
 
-  const handleClick = () => {
-    if (isAuth)
-      setProfile(!profile)
-    if (!isAuth)
-      onOpen()
+  const handleClick = (label) => {
+
+    if (label === 'Sign in') {
+      if (isAuth)
+        return setProfile(!profile)
+      if (!isAuth)
+        return onOpen()
+    }
+
+    if(label === 'Trips'){
+      router('/trips')
+    }
+
   }
 
   const handleLogout = () => {
@@ -122,6 +130,7 @@ export default function Navbar() {
         bg={'white'}
         boxShadow={'rgba(0, 0, 0, 0.35) 0px 5px 15px'}
         padding={'20px'}
+        zIndex={2000}
       >
         <Flex justifyContent={'flex-end'}>
           <RxCross2 onClick={() => setHam(!ham)} size={'25px'} id={styles.cross} />
@@ -165,7 +174,8 @@ export default function Navbar() {
           navItems.map((ele, i) => {
             return <Box
               position={'relative'}
-              onClick={ele.label === 'Sign in' ? handleClick : undefined}
+              // onClick={ele.label === 'Sign in' ? handleClick : undefined}
+              onClick={() => handleClick(ele.label)}
               className={`${ele.label !== 'Basket' && styles.hideBtn} ${styles.navItems_child}`} color={ele.label === 'Sign in' && 'white'}
               bgColor={ele.label === 'Sign in' && 'black'}
               key={i}>

@@ -2,14 +2,15 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, useToast } from "@chakra-ui/react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'
 import '../styles/places.css'
 import { useNavigate } from "react-router-dom";
 import { BsCircleFill } from 'react-icons/bs'
 import { AiOutlineHeart } from 'react-icons/ai'
 import styles from '../styles/home.module.css'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addToTrips } from "../redux/homeReducer/home.actions";
 
 function SampleNextArrow(props) {
     const { onClick } = props;
@@ -51,6 +52,7 @@ function SamplePrevArrow(props) {
 
 export default function Tours({ data }) {
 
+    const toast = useToast()
     const settings = {
         infinite: true,
         slidesToShow: 4,
@@ -84,8 +86,9 @@ export default function Tours({ data }) {
             }
         ]
     };
+    const dispatch = useDispatch()
     const router = useNavigate();
-    const { isAuth, open } = useSelector(s => s.auth)
+    const { isAuth, open, token } = useSelector(s => s.auth)
 
     const handleClick = (id) => {
         router('/singleTour/' + id)
@@ -94,9 +97,20 @@ export default function Tours({ data }) {
     const postTrips = (e, id) => {
         e.stopPropagation()
         if (!isAuth) {
-           return open()
+            return open()
         }
+        console.log(id);
+        dispatch(addToTrips(id, token)).then((r) => {
 
+            toast({
+                title: r ? 'Trip added successfully!' : 'Trip has already been added!',
+                position: 'top',
+                status: r ? 'success' : 'error',
+                duration: 5000,
+                isClosable: true,
+            })
+
+        })
         //to be added to wishlist
     }
 
