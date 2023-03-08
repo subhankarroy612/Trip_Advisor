@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Flex, Image, Input, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Text } from '@chakra-ui/react'
 import styles from '../styles/home.module.css'
 import { MdBed } from 'react-icons/md';
 import { TbRoad } from 'react-icons/tb';

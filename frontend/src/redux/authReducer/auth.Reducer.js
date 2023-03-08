@@ -2,7 +2,8 @@ import { LOGIN, LOGOUT } from "./auth.actionTypes"
 
 const initState = {
     isAuth: !!localStorage.getItem('tripAdvisor'),
-    token: localStorage.getItem('tripAdvisor') || ''
+    token: localStorage.getItem('tripAdvisor') || '',
+    open: ''
 }
 
 export const authReducer = (state = initState, action) => {
@@ -21,6 +22,10 @@ export const authReducer = (state = initState, action) => {
                 ...state,
                 isAuth: false,
                 token: ''
+            }
+        case 'storeModal':
+            return {
+                ...state, open: action.payload
             }
         default:
             return state

@@ -24,17 +24,28 @@
     width: 100%;
     background-color: rgba(255, 192, 203, 0.811);
 }
+
 #search {
     background-color: white;
     height: 60px;
     width: 40vw;
 }
 
-.places{
+.places {
     text-align: start;
     margin-top: 5vh;
 
 }
+
+.tourCard {
+    position: relative;
+}
+
+.tourCard:hover .tourTitle  {
+    text-decoration: underline;
+}
+
+
 @media screen and (max-width: 1023px) {
     #home {
         width: 90%;
@@ -43,9 +54,15 @@
     #topbtns {
         grid-template-columns: repeat(3, 1fr);
     }
+
     #search {
         width: 70vw;
     }
+
+    #tripsIcon {
+        display: none;
+    }
+
 
 }
 
@@ -53,7 +70,11 @@
     #home {
         width: 100%;
     }
+
     #topbtns {
         grid-template-columns: repeat(2, 1fr);
     }
+
+
+
 }
