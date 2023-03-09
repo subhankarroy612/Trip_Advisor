@@ -1,0 +1,46 @@
+#basket {
+    position: relative;
+    width: 1170px;
+    margin: auto;
+    padding: 10px;
+}
+
+#basketContainer{
+    position: relative;
+    flex-direction: column;
+}
+
+#checkout{
+    position: absolute;
+    right: -10px;
+    text-align: start;
+    padding: 30px;
+    width: 35%;
+    border: 1px solid rgba(128, 128, 128, 0.406);
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 1023px) {
+    #basket {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #basket {
+        width: 100%;
+    }
+    #basketContainer{
+        position: relative;
+        flex-direction: column;
+    }
+    #checkout{
+        position: relative;
+        width: 100%;
+        right: 0;
+    }
+    #basketChild{
+        width: 100%;
+    }
+
+}
