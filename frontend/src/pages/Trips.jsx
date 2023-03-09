@@ -4,6 +4,7 @@ import styles from '../styles/trips.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteTrip, getTripsData } from '../redux/homeReducer/home.actions'
 import { AiOutlineDelete } from 'react-icons/ai'
+import { useNavigate } from 'react-router-dom'
 
 export default function Trips() {
 
@@ -11,6 +12,7 @@ export default function Trips() {
     const [trips, setTrips] = useState([])
     const { isAuth, token } = useSelector(s => s.auth);
     const toast = useToast()
+    const router = useNavigate()
 
     useEffect(() => {
         dispatch(getTripsData(token)).then((r) => {
@@ -19,7 +21,8 @@ export default function Trips() {
 
     }, [isAuth, dispatch, token])
 
-    const handleDelete = (id) => {
+    const handleDelete = (e, id) => {
+        e.stopPropagation()
         dispatch(deleteTrip(id, token)).then((r) => {
             toast({
                 title: r ? 'Trip deleted successfully!' : 'Server Error!',
@@ -31,6 +34,10 @@ export default function Trips() {
             let store = trips.filter((ele) => ele._id !== id)
             setTrips(store)
         })
+    }
+
+    const handleClick = (id,uniId) => {
+        router('/singleTour/' + id + '/' + uniId)
     }
 
     return (
@@ -53,13 +60,14 @@ export default function Trips() {
                 {
                     trips && trips.map((ele, i) => {
                         return <Box
+                            onClick={() => handleClick(ele.productId._id, ele._id)}
                             position={'relative'}
                             boxShadow={'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'}
                             textAlign={'start'}
                             p={1}
                             key={i}>
                             <Box
-                                onClick={() => handleDelete(ele._id)}
+                                onClick={(e) => handleDelete(e, ele._id)}
                                 position={'absolute'}
                                 bg={'black'}
                                 p={1}

@@ -92,6 +92,9 @@ export default function Navbar() {
     if(label === 'Trips'){
       router('/trips')
     }
+    if(label === 'Basket'){
+      router('/basket')
+    }
 
   }
 

@@ -80,8 +80,8 @@ export default function Tours({ data }) {
             {
                 breakpoint: 480,
                 settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 2
+                    slidesToShow: 2,
+                    slidesToScroll: 1
                 }
             }
         ]
@@ -91,7 +91,7 @@ export default function Tours({ data }) {
     const { isAuth, open, token } = useSelector(s => s.auth)
 
     const handleClick = (id) => {
-        router('/singleTour/' + id)
+        router('/singleTour/' + id + '/uniId')
     }
 
     const postTrips = (e, id) => {

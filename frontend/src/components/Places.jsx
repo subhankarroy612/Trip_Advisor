@@ -108,8 +108,8 @@ export default function Places({ data }) {
             {
                 breakpoint: 480,
                 settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 2
+                    slidesToShow: 2,
+                    slidesToScroll: 1
                 }
             }
         ]
@@ -136,7 +136,7 @@ export default function Places({ data }) {
                                 backdropFilter={'blur(2px)'}
                                 as={'b'}
                                 pl='10px'
-                                fontSize={'3xl'}
+                                fontSize={['1xl','2xl','3xl']}
                                 color={'white'}
                                 position='absolute'
                                 bottom={2}
