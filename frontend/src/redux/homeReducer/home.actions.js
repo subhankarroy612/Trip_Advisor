@@ -79,3 +79,20 @@ export const deleteTrip = (id, token) => async (dispatch) => {
         return false
     }
 }
+
+export const addToBaskets = (id, pax, token) => async (dispatch) => {
+    try {
+        await axios.post(Url + '/basket', {
+            productId: id,
+            pax
+        }, {
+            headers: {
+                token
+            }
+        })
+        return true
+    } catch (e) {
+        console.log(e.message);
+        return false
+    }
+}
