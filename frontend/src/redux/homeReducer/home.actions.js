@@ -96,3 +96,29 @@ export const addToBaskets = (id, pax, token) => async (dispatch) => {
         return false
     }
 }
+
+export const getBasketData = (token) => async (dispatch) => {
+    try {
+        let res = await axios(Url + '/basket', {
+            headers: {
+                token
+            }
+        })
+        return (res.data);
+    } catch (e) {
+        console.log(e.message);
+    }
+}
+
+export const deleteBasket = (id, token) => async (dispatch) => {
+    try {
+        await axios.delete(Url + '/basket/' + id, {
+            headers: {
+                token
+            }
+        })
+        return true
+    } catch (e) {
+        return false
+    }
+}

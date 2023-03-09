@@ -48,7 +48,8 @@ export default function SingleTour() {
     const handleBasket = () => {
 
         dispatch(addToBaskets(id, c, token)).then((r) => {
-            dispatch(deleteTrip(uniId, token))
+            if (r)
+                dispatch(deleteTrip(uniId, token))
             toast({
                 title: r ? 'Item added to basket!' : 'Item already added!',
                 position: 'top',
