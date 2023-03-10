@@ -39,7 +39,7 @@ export default function Basket() {
         isClosable: true,
       })
       if (r) {
-        dispatch({type:'decBasketCount'})
+        dispatch({ type: 'decBasketCount' })
         let items = basket.filter((ele, i) => ele._id !== id);
         setBasket(items)
       }
@@ -72,7 +72,7 @@ export default function Basket() {
                 boxShadow={'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'}
               >
 
-                <Box w={'200px'}>
+                <Box w={'200px'}> 
                   <Image
                     h={'full'}
                     w={'200px'} src={ele?.productId?.thumbnail} alt={'pic'} />
@@ -102,7 +102,7 @@ export default function Basket() {
           }
         </Box>
 
-        {(isAuth && basket?.length) && <Box id={styles.checkout}>
+        {(isAuth && basket?.length) && <Box bg={'white'} id={styles.checkout}>
           <Text as={'b'} fontSize={'2xl'}>Review Order Details</Text>
 
           <Flex mt={10} justifyContent={'space-between'}>
@@ -120,7 +120,7 @@ export default function Basket() {
 
           <Text mt={10} color={'gray'} fontSize={'xs'}>No additional taxes & fees</Text>
 
-          <Button bg={'yellow.400'} w={'full'} mt={10}>Checkout</Button>
+          <Button bg={'yellow.400'} zIndex={20} w={'full'} mt={10}>Checkout</Button>
         </Box>}
 
       </Flex>
