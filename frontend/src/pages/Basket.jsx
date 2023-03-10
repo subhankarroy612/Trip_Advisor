@@ -39,6 +39,7 @@ export default function Basket() {
         isClosable: true,
       })
       if (r) {
+        dispatch({type:'decBasketCount'})
         let items = basket.filter((ele, i) => ele._id !== id);
         setBasket(items)
       }

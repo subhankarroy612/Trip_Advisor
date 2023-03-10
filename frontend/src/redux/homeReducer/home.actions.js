@@ -122,3 +122,14 @@ export const deleteBasket = (id, token) => async (dispatch) => {
         return false
     }
 }
+
+export const searchResult = (text) => async (dispatch) => {
+
+    try {
+        let res = await axios(Url + '/getData?query=' + text)
+        return res.data
+    } catch (e) {
+        console.log(e.message);
+    }
+
+}

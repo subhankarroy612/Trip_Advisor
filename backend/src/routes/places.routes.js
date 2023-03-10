@@ -4,6 +4,19 @@ const toursModel = require('../models/tours.model');
 
 const app = express.Router();
 
+app.get('/', async (req, res) => {
+    const { query = '' } = req.query
+    try {
+        let data = await placesModel.aggregate([
+            { $match: { 'title': { $regex: query, $options: 'i' } } }
+        ])
+        return res.status(200).send(data)
+    } catch (e) {
+        return res.status(501).send(e.message)
+    }
+})
+
+
 app.get('/places', async (req, res) => {
     try {
         let data = await placesModel.find()
@@ -42,6 +55,7 @@ app.get('/singleTour/:id', async (req, res) => {
         return res.status(501).send(e.message)
     }
 })
+
 
 
 module.exports = app;
