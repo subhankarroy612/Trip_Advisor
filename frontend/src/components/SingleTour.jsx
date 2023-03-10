@@ -46,8 +46,12 @@ export default function SingleTour() {
     }
 
     const handleBasket = () => {
-
+        if (!isAuth){
+            onClose()
+            return open()
+        }
         dispatch(addToBaskets(id, c, token)).then((r) => {
+
             if (r) {
                 dispatch(deleteTrip(uniId, token))
                 dispatch({ type: 'incBasketCount' })
