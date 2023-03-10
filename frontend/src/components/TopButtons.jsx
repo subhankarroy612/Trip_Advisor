@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Box, Button, Flex, Text } from '@chakra-ui/react'
 import styles from '../styles/home.module.css'
 import { MdBed } from 'react-icons/md';
@@ -18,7 +18,7 @@ let fullScreenBtns = [
 ]
 
 
-export default function TopButtons() {
+function TopButtons() {
     return (
         <Box
             mt={'18px'}
@@ -55,3 +55,5 @@ export default function TopButtons() {
         </Box>
     )
 }
+
+export default memo(TopButtons)

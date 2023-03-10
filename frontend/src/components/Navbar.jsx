@@ -6,6 +6,7 @@ import {
   Divider,
   Flex,
   Image,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -23,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import jwt_decode from 'jwt-decode'
 import { logout } from '../redux/authReducer/auth.actions';
 import { useNavigate } from 'react-router-dom';
+import { getBasketData, searchResult } from '../redux/homeReducer/home.actions';
 
 const navItems = [
   { label: 'Review' },
@@ -63,17 +65,24 @@ export default function Navbar() {
   const [ham, setHam] = useState(false);
   const dispatch = useDispatch()
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isOpenS, onOpen: onOpenS, onClose: onCloseS } = useDisclosure();
   const { isAuth, token } = useSelector(s => s.auth);
+  const { basketCount } = useSelector(s => s.home);
   const [profile, setProfile] = useState(false)
   const [userDetails, setUserDetails] = useState({});
-  const toast = useToast()
-  const router = useNavigate()
+  const toast = useToast();
+  const router = useNavigate();
+  const [text, setText] = useState('')
 
   useEffect(() => {
     if (token.length)
       setUserDetails(jwt_decode(token))
 
     dispatch({ type: 'storeModal', payload: onOpen })
+
+    dispatch(getBasketData(token))
+      .then((r) => dispatch({ type: 'basketCount', payload: r.length }))
+
   }, [isAuth, token, userDetails.firstname, dispatch, onOpen]);
 
   const handleHam = () => {
@@ -89,10 +98,10 @@ export default function Navbar() {
         return onOpen()
     }
 
-    if(label === 'Trips'){
+    if (label === 'Trips') {
       router('/trips')
     }
-    if(label === 'Basket'){
+    if (label === 'Basket') {
       router('/basket')
     }
 
@@ -100,6 +109,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     dispatch(logout())
+    dispatch({ type: 'basketCount', payload: 0 })
     return toast({
       title: 'Sign out successful!',
       status: 'success',
@@ -107,6 +117,25 @@ export default function Navbar() {
       duration: 5000,
       isClosable: true,
     })
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    dispatch(searchResult(text)).then((r) => {
+      if (r.length)
+        router('/singlePlace/' + r[0]._id)
+      else
+        toast({
+          title: 'No such place found!',
+          position: 'top',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        })
+        onCloseS()
+    })
+
+
   }
 
   return (
@@ -118,6 +147,18 @@ export default function Navbar() {
           <ModalCloseButton />
           <ModalBody >
             <SigninModal onClose={onClose} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal onClose={onCloseS} isOpen={isOpenS} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody >
+            <form onSubmit={handleSearch}>
+              <Input placeholder='Search places' mt={12} mb={12} onChange={(e) => setText(e.target.value)} />
+            </form>
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -171,13 +212,12 @@ export default function Navbar() {
 
       <div id={styles.navItems_container}>
 
-        <HiOutlineSearch className={styles.search_btn} size={'25px'} />
+        <HiOutlineSearch onClick={onOpenS} cursor={'pointer'} className={styles.search_btn} size={'25px'} />
 
         {
           navItems.map((ele, i) => {
             return <Box
               position={'relative'}
-              // onClick={ele.label === 'Sign in' ? handleClick : undefined}
               onClick={() => handleClick(ele.label)}
               className={`${ele.label !== 'Basket' && styles.hideBtn} ${styles.navItems_child}`} color={ele.label === 'Sign in' && 'white'}
               bgColor={ele.label === 'Sign in' && 'black'}
@@ -186,6 +226,21 @@ export default function Navbar() {
               {i === 1 && <AiOutlineHeart size={'25px'} />}
               {i === 2 && <AiOutlineBell size={'25px'} />}
               {i === 4 && <BsCart3 size={'25px'} />}
+
+              {/*This is basket count */}
+
+              {ele.label === 'Basket' && basketCount >= 1 && <Text
+                fontSize={'xs'}
+                as={'b'}
+                bg={'red'}
+                color={'white'}
+                w={5}
+                borderRadius={50}
+                position={'absolute'}
+                top={0}
+                left={5}
+              >{basketCount}</Text>}
+
               <Text
                 className={ele.label !== 'Sign in' && styles.navText}
                 as={'b'}

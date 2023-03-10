@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -50,8 +50,8 @@ function SamplePrevArrow(props) {
     );
 }
 
-export default function Tours({ data }) {
-
+function Tours({ data }) {
+   
     const toast = useToast()
     const settings = {
         infinite: true,
@@ -111,7 +111,6 @@ export default function Tours({ data }) {
             })
 
         })
-        //to be added to wishlist
     }
 
     return (
@@ -167,3 +166,4 @@ export default function Tours({ data }) {
 }
 
 
+export default memo(Tours)

@@ -1,0 +1,17 @@
+#footer {
+    position: relative;
+    width: 1170px;
+    margin: auto;
+    padding: 10px;
+}
+@media screen and (max-width: 1023px) {
+    #footer {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #footer {
+        width: 100%;
+    }
+}
