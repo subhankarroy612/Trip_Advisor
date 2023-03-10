@@ -72,7 +72,7 @@ export default function Basket() {
                 boxShadow={'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'}
               >
 
-                <Box w={'200px'}>
+                <Box w={'200px'}> 
                   <Image
                     h={'full'}
                     w={'200px'} src={ele?.productId?.thumbnail} alt={'pic'} />
